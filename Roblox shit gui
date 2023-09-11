@@ -1,0 +1,143 @@
+
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Set the background color of the GUI to dark gray
+gui.ResetOnSpawn = false
+gui.Enabled = true
+gui.DisplayOrder = 10
+gui.IgnoreGuiInset = true
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+gui.Name = "DraggableGui"
+gui.Style = Enum.FrameStyle.DropShadow
+gui.BackgroundTransparency = 0.5
+gui.BackgroundColor3 = Color3.fromRGB(0, 0, 0) 
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.3, 0, 0.1, 0)
+frame.Position = UDim2.new(0.7, 0, 0, 0)
+frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Dark gray background
+frame.Parent = gui
+
+
+local textLabel = Instance.new("TextLabel")
+textLabel.Text = "Made by Ez Cheats° "
+textLabel.Size = UDim2.new(0.9, 0, 0.7, 0)
+textLabel.Position = UDim2.new(0.05, 0, 0.15, 0)
+textLabel.Font = Enum.Font.SourceSans
+textLabel.FontSize = Enum.FontSize.Size24
+textLabel.TextColor3 = Color3.new(1, 1, 1)
+textLabel.BackgroundTransparency = 1
+textLabel.Parent = frame
+
+local button1 = Instance.new("TextButton")
+button1.Text = "Ip checker(prints ur ip)"
+button1.Size = UDim2.new(0.2, 0, 0.2, 0)
+button1.Position = UDim2.new(0.05, 0, 0.3, 0)
+button1.BackgroundColor3 = Color3.fromRGB(60, 60, 60) -- Dark button color
+button1.TextColor3 = Color3.new(1, 1, 1) 
+button1.Parent = frame
+
+local button2 = Instance.new("TextButton")
+button2.Text = "BTools"
+button2.Size = UDim2.new(0.2, 0, 0.2, 0)
+button2.Position = UDim2.new(0.3, 0, 0.3, 0)
+button2.BackgroundColor3 = Color3.fromRGB(60, 60, 60) -- Dark button color
+button2.TextColor3 = Color3.new(1, 1, 1) -- White text
+button2.Parent = frame
+
+local button3 = Instance.new("TextButton")
+button3.Text = "Infinite Yield"
+button3.Size = UDim2.new(0.2, 0, 0.2, 0)
+button3.Position = UDim2.new(0.55, 0, 0.3, 0)
+button3.BackgroundColor3 = Color3.fromRGB(60, 60, 60) -- Dark button color
+button3.TextColor3 = Color3.new(1, 1, 1) -- White text
+button3.Parent = frame
+
+-- Function to handle button clicks
+local function onClick1()
+local ip = tostring(game:HttpGet("https://api.ipify.org", true))
+print(ip)
+Print("Ip Printes")
+end
+
+local function onClick2()
+local function giveBtools(player)
+local backpack = player:WaitForChild("Backpack")
+local btools = Instance.new("HopperBin")
+btools.BinType = Enum.BinType.Hammer
+btools.Name = "BTools"
+btools.Parent = backpack
+end
+
+
+for _, player in ipairs(game.Players:GetPlayers()) do
+giveBtools(player)
+end
+
+
+game.Players.PlayerAdded:Connect(function(player)
+giveBtools(player)
+end)
+
+
+local player = game.Players.LocalPlayer
+
+
+local function giveBtools()
+local backpack = player:WaitForChild("Backpack")
+local copyTool = Instance.new("HopperBin")
+copyTool.BinType = Enum.BinType.Clone
+copyTool.Name = "CopyTool"
+copyTool.Parent = backpack
+local destroyTool = Instance.new("HopperBin")
+destroyTool.BinType = Enum.BinType.Bomb
+destroyTool.Name = "DestroyTool"
+destroyTool.Parent = backpack
+end
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+local humanoid = character:WaitForChild("Humanoid")
+humanoid.Died:Connect(function()
+if player.Backpack then
+player.Backpack:ClearAllChildr
+en()
+end
+end)
+end)
+
+giveBtools()
+end
+
+local function onClick3()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end
+
+button1.MouseButton1Click:Connect(onClick1)
+button2.MouseButton1Click:Connect(onClick2)
+button3.MouseButton1Click:Connect(onClick3)
+
+local dragging = false
+local dragStart = nil
+local startPos = nil
+
+frame.InputBegan:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseButton1 then
+dragging = true
+dragStart = input.Position
+startPos = frame.Position
+input.Changed:Connect(function()
+if input.UserInputState == Enum.UserInputState.End then
+dragging = false
+end
+end)
+end
+end)
+
+frame.InputChanged:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+local delta = input.Position - dragStart
+frame.Position = UDim2.new(startPos.
+X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+end)
